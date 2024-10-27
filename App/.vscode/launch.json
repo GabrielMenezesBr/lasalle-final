@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Default",
+      "type": "firefox",
+      "request": "launch",
+      "url": "http://localhost:3000",
+      "reAttach": true,
+      "timeout": 10000,
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "default",
+      "postDebugTask": "kill"
+    },
+  ]
+}

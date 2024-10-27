@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "pkief.material-icon-theme",
+        "donebd.rest-client-api",
+        "helixquar.randomeverything",
+        "ms-azuretools.vscode-docker"
+    ]
+}

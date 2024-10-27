@@ -1,0 +1,77 @@
+@api = http://localhost:5262
+
+### Test the Root Endpoint
+GET {{api}}/api
+Accept: application/json
+
+###
+# @name login
+POST  {{api}}/api/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "Email" : "admin@mail.com",
+    "Password" : "AdminPassword123!"
+}
+
+###
+
+@authToken = {{ login.response.body.token }}
+
+###
+# @name users
+GET {{api}}/api/user HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{ authToken }}
+
+###
+# @name students
+GET {{api}}/api/student HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{ authToken }}
+
+###
+@student = {{ students.response.body.data[5].id }}
+
+###
+GET  {{api}}/api/student/{{student}} HTTP/1.1
+Content-Type:  application/json
+Authorization: Bearer {{ authToken }}
+
+###
+# @name studentCourse
+GET  {{api}}/api/student/{{student}}/course HTTP/1.1
+Content-Type:  application/json
+Authorization: Bearer {{ authToken }}
+
+@course = {{ studentCourse.response.body.data[0].id }}
+
+###
+GET  {{api}}/api/student/{{student}}/course/{{course}} HTTP/1.1
+Content-Type:  application/json
+Authorization: Bearer {{ authToken }}
+
+###
+GET  {{api}}/api/student/{{student}}/course/{{course}}?session=Winter HTTP/1.1
+Content-Type:  application/json
+Authorization: Bearer {{ authToken }}
+
+###
+PATCH  {{api}}/api/student/{{student}}/course/{{course}} HTTP/1.1
+Content-Type:  application/json
+Authorization: Bearer {{ authToken }}
+
+{
+    "StudentCourseGradeId": 59,
+    "MidTerm" : 80
+}
+
+###
+POST  {{api}}/api/student/assign-course HTTP/1.1
+Content-Type:  application/json
+Authorization: Bearer {{ authToken }}
+
+{
+    "studentId" : "{{student}}",
+    "courseId" : 3
+}

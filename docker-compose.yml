@@ -1,0 +1,42 @@
+services:
+  api:
+    build: 
+      context: ./Api
+    depends_on:
+      - mssql
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=mssql;Database=FinalExamProdDB;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True;Encrypt=False;
+      - JwtSettings__Key=VPURxn6oujAe7wDfqKQ4bG1VWGF9bcLwoDKGUX
+      - JwtSettings__Issuer=Api
+      - JwtSettings__Audience=ApiUsers
+      - JwtSettings__ExpirationMinutes=30
+    networks:
+      - finalexam
+  mssql:
+    image: mcr.microsoft.com/azure-sql-edge
+    user: "0:0"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=YourStrong@Passw0rd
+    networks:
+      - finalexam
+    volumes:
+      # - mssql:/var/opt/mssql/data
+      - ./Database:/var/opt/mssql/data
+  web:
+    build: 
+      context: ./App
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    networks:
+      - finalexam
+
+networks:
+  finalexam:
+    driver: bridge
+
+# volumes:
+#   mssql:

@@ -1,0 +1,13 @@
+{
+    "recommendations": [
+        "ms-dotnettools.vscode-dotnet-runtime",
+        "ms-dotnettools.csharp",
+        "firefox-devtools.vscode-firefox-debug",
+        "ms-azuretools.vscode-docker",
+        "pkief.material-icon-theme",
+        "helixquar.randomeverything",
+        "humao.rest-client",
+        "qwtel.sqlite-viewer",
+        "ms-vscode-remote.remote-wsl"
+    ]
+}
