@@ -5,11 +5,12 @@ import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import UserManagement from './components/UserManagement';
 import StudentManagement from './components/StudentManagement';
-import MyCourses from './components/MyCourse';
+import CourseManagement from './components/CourseManagement';
+import MyCourses from './components/MyCourses';
 
 const App = () => {
     const isAuthenticated = !!localStorage.getItem('jwtToken');
-    const isAdmin = true; // Lógica para verificar se o usuário é admin deve ser implementada
+    const isAdmin = true; // Logic to check if user is admin should be implemented
 
     return (
         <Router>
@@ -18,6 +19,7 @@ const App = () => {
                 <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
                 <Route path="/users" element={isAdmin ? <UserManagement /> : <Navigate to="/dashboard" />} />
                 <Route path="/students" element={isAdmin ? <StudentManagement /> : <Navigate to="/dashboard" />} />
+                <Route path="/courses" element={isAdmin ? <CourseManagement /> : <Navigate to="/dashboard" />} />
                 <Route path="/my-courses" element={isAuthenticated ? <MyCourses /> : <Navigate to="/login" />} />
                 <Route path="/" element={<Navigate to="/login" />} />
             </Routes>

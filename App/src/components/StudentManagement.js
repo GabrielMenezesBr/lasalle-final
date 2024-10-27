@@ -6,6 +6,8 @@ const StudentManagement = () => {
     const [students, setStudents] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [newStudentName, setNewStudentName] = useState('');
+    const [editingStudent, setEditingStudent] = useState(null);
 
     const fetchStudents = async (pageNumber) => {
         try {
@@ -21,9 +23,32 @@ const StudentManagement = () => {
         fetchStudents(page);
     }, [page]);
 
-    const handleEdit = (studentId) => {
-        // Lógica para editar estudante
-        console.log('Edit student:', studentId);
+    const handleAddStudent = async () => {
+        try {
+            await axios.post('API_URL/students', { name: newStudentName }); // Ajuste a URL da API
+            fetchStudents(page);
+            setNewStudentName('');
+        } catch (error) {
+            console.error('Error adding student:', error);
+        }
+    };
+
+    const handleEdit = (student) => {
+        setEditingStudent(student);
+        setNewStudentName(student.name); // Preencher o campo de entrada para edição
+    };
+
+    const handleUpdateStudent = async () => {
+        if (editingStudent) {
+            try {
+                await axios.put(`API_URL/students/${editingStudent.id}`, { name: newStudentName }); // Ajuste a URL da API
+                fetchStudents(page);
+                setEditingStudent(null);
+                setNewStudentName('');
+            } catch (error) {
+                console.error('Error updating student:', error);
+            }
+        }
     };
 
     const handleDelete = async (studentId) => {
@@ -38,11 +63,20 @@ const StudentManagement = () => {
     return (
         <div>
             <h2>Gerenciamento de Estudantes</h2>
+            <input
+                type="text"
+                value={newStudentName}
+                onChange={(e) => setNewStudentName(e.target.value)}
+                placeholder="Nome do estudante"
+            />
+            <button onClick={editingStudent ? handleUpdateStudent : handleAddStudent}>
+                {editingStudent ? 'Atualizar Estudante' : 'Adicionar Estudante'}
+            </button>
             <ul>
                 {students.map((student) => (
                     <li key={student.id}>
                         {student.name}
-                        <button onClick={() => handleEdit(student.id)}>Edit</button>
+                        <button onClick={() => handleEdit(student)}>Edit</button>
                         <button onClick={() => handleDelete(student.id)}>Delete</button>
                     </li>
                 ))}
